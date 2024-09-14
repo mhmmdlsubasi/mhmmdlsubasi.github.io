@@ -1,0 +1,14 @@
+
+th.sortable {
+    cursor: pointer;
+}
+
+th.sortable.asc::after {
+    content: ' ▲';
+}
+
+th.sortable.desc::after {
+    content: ' ▼';
+}
+
+
