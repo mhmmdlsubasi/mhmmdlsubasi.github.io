@@ -13,7 +13,7 @@ draft: false
 
 İşte rekor kıran o iller:
 {{<
-csv-table-new
+csv-table-2
 src="data.csv"
 delimiter=","
 showHeader="true"
