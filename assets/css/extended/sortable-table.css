@@ -1,0 +1,61 @@
+.sortable-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.sortable-table th,
+.sortable-table td {
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+.sortable-table th {
+    background: var(--entry);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sortable-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+    .sortable-table th,
+    .sortable-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sortable-table {
+        font-size: 0.9rem;
+    }
+
+    .sortable-table th,
+    .sortable-table td {
+        padding: 0.4rem;
+    }
+}
+
+th.sortable {
+    cursor: pointer;
+}
+
+th.sortable.asc::after {
+    content: ' ▲';
+}
+
+th.sortable.desc::after {
+    content: ' ▼';
+}
+
+

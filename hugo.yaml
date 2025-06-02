@@ -1,0 +1,212 @@
+baseURL: "/"
+languageCode: tr-tr
+title: Subasi
+theme: PaperMod
+DefaultContentLanguage: tr
+
+pagination:
+  pageSize: 5
+
+minify:
+  disableXML: false
+  minifyOutput: true
+
+imaging:
+  resampleFilter: Linear
+  #resampleFilter: MitchellNetravali (Cubic filter for alternative)
+  hint: picture
+  exif:
+    disableDate: true
+    disableLatLong: true
+    excludeFields: ".*"
+    #includeFields: "" (To improve performance and decrease cache size, we need to set neither excludeFields nor includeFields)
+
+frontmatter:
+  date:
+    - date
+    - publishDate
+    - lastmod
+  expiryDate:
+    - expiryDate
+  lastmod:
+    - lastmod
+    - :git
+    - date
+    - publishDate
+  publishDate:
+    - publishDate
+    - date
+
+languages:
+  tr:
+    languageName: ":tr:"
+    weight: 1
+    title: "Subasi - Türkçe"
+    params:
+      languageAltTitle: Turkish
+      profileMode:
+        title: "Muhammed Ali Subaşı"
+        subtitle: "Meteoroloji Mühendisi"
+        buttons:
+          - name: Blog
+            url: "blog"
+          - name: Hakkında
+            url: "about"
+    menu:
+      main:
+        - identifier: categories
+          name: Kategoriler
+          url: "/categories/"
+          weight: 1
+        - identifier: tags
+          name: Etiketler
+          pageRef: "/tags/"
+          weight: 2
+        - identifier: archives
+          name: Arşiv
+          url: "/archives/"
+          weight: 3
+        - identifier: search
+          name: "Arama \U0001f50d"
+          url: "/search/"
+          weight: 4
+
+  en:
+    languageName: ":gb:"
+    weight: 2
+    title: "Subasi - English"
+    params:
+      languageAltTitle: English
+      profileMode:
+        title: "Muhammed Ali Subaşı"
+        subtitle: "Meteorology Engineer"
+        buttons:
+          - name: Blog
+            url: "blog"
+          - name: About Me
+            url: "about"
+    menu:
+      main:
+        - identifier: categories
+          name: Categories
+          url: "/categories/"
+          weight: 1
+        - identifier: tags
+          name: Tags
+          pageRef: "/tags/"
+          weight: 2
+        - identifier: archives
+          name: Archives
+          url: "/archives/"
+          weight: 3
+        - identifier: search
+          name: "Search \U0001f50d"
+          url: "/search/"
+          weight: 4
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  mainSections:
+    - blog
+  profileMode:
+    enabled: true
+    imageUrl: "images/avatar.png"
+    imageTitle: "My Profile Photo" # optional
+    imageWidth: 213 # custom size
+    imageHeight: 300 # custom size
+    indexPostContentFile: "/home"
+
+  env: production
+  DateFormat: "2 January, 2006"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowRssButtonInSectionTermList: true
+  disableSpecial1stPost: true
+  disableScrollToTop: false
+  rss: true
+  comments: true
+  hidemeta: false
+  hideSummary: false
+  tocopen: true
+  ShowToc: true
+  searchHidden: false
+  displayFullLangName: true
+  ShowFullTextinRSS: true
+  enableInlineShortcodes: true
+  enableRobotsTXT: true
+  buildDrafts: false
+  buildFuture: false
+  buildExpired: false
+  enableEmoji: true
+  enableGitInfo: true
+
+  socialIcons:
+    - name: cv
+      url: "/cv.pdf"
+    - name: linkedin
+      url: "https://linkedin.com/in/mhmmdlsubasi"
+    - name: github
+      url: "https://github.com/mhmmdlsubasi"
+    - name: email
+      url: "mailto:mhmmdlsubasi@gmail.com"
+    - name: rss
+      url: "https://mhmmdlsubasi.github.io/index.xml"
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    # limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    keys:
+      - "title"
+      - "permalink"
+      - "summary"
+      - "content"
+
+  # editPost:
+  #   URL: "https://github.com/mhmmdlsubasi/mhmmdlsubasi.github.io/tree/main/content"
+  #   # Text: "Suggest Changes"
+  #   appendFilePath: true
+
+  assets:
+    disableHLJS: true
+    disableFingerprinting: false
+    favicon: "favicons/favicon.ico"
+    favicon16x16: "favicons/favicon-16x16.png"
+    favicon32x32: "favicons/favicon-32x32.png"
+    apple_touch_icon: "favicons/apple-touch-icon.png"
+
+  cover:
+    hidden: false
+    hiddenInList: false
+    hiddenInSingle: false
+    linkFullImages: false
+
+taxonomies:
+  category: categories
+  tag: tags
+  # series: series
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+# services:
+#   disqus:
+#     shortname: mhmmdlsubasi
+
+# googleAnalytics: G-ZM2V4GMWVT

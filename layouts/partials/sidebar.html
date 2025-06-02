@@ -1,0 +1,64 @@
+<!-- Sidebar -->
+{{ if .Params.sidebar }}
+<div class="sidebar-container">
+  <aside class="sidebar">
+    {{ with .Params.sidebar.groups }} {{ range . }} {{ if .title }}
+    <div class="sidebar-group">
+      <button class="group-toggle" aria-expanded="true">
+        <h3 class="group-title">{{ .title }}</h3>
+        <span class="toggle-icon">▼</span>
+      </button>
+      {{ if .items }}
+      <div class="group-content">
+        <div class="link-cards">
+          {{ range .items }} {{ if and .title .url }}
+          <a href="{{ .url }}" class="link-card" target="_blank" rel="noopener">
+            <div class="link-content">
+              <div class="link-header">
+                {{ if .icon }}
+                <span class="link-icon">
+                  {{ partial "svg.html" (dict "name" .icon) }}
+                </span>
+                {{ end }}
+                <h4 class="link-title">{{ .title }}</h4>
+              </div>
+              {{ if .description }}
+              <p>{{ .description }}</p>
+              {{ end }} {{ if .domain }}
+              <span class="link-domain">{{ .domain }}</span>
+              {{ end }}
+            </div>
+          </a>
+          {{ end }} {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+    {{ end }} {{ end }} {{ end }}
+  </aside>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const groupToggles = document.querySelectorAll(".group-toggle");
+
+    groupToggles.forEach((toggle) => {
+      toggle.addEventListener("click", function () {
+        const isExpanded = this.getAttribute("aria-expanded") === "true";
+        this.setAttribute("aria-expanded", !isExpanded);
+
+        const content = this.nextElementSibling;
+        const icon = this.querySelector(".toggle-icon");
+
+        if (isExpanded) {
+          content.style.maxHeight = "0";
+          icon.textContent = "▶";
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+          icon.textContent = "▼";
+        }
+      });
+    });
+  });
+</script>
+{{ end }}

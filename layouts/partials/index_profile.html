@@ -1,0 +1,135 @@
+<div class="profile">
+    {{- with site.Params.profileMode }}
+    <div class="profile_inner">
+        {{- if .imageUrl -}}
+        {{- $img := "" }}
+        {{- if not (urls.Parse .imageUrl).IsAbs }}
+            {{- $img = resources.Get .imageUrl }}
+        {{- end }}
+        {{- if $img }}
+            {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
+            {{- if hugo.IsExtended -}}
+                {{- $processableFormats = $processableFormats | append "webp" -}}
+            {{- end -}}
+            {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
+            {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
+                {{- if (not (and (not .imageHeight) (not .imageWidth))) }}
+                    {{- $img = $img.Resize (printf "%dx%d" .imageWidth .imageHeight) }}
+                {{- else if .imageHeight }}
+                    {{- $img = $img.Resize (printf "x%d" .imageHeight) }}
+                {{ else if .imageWidth }}
+                    {{- $img = $img.Resize (printf "%dx" .imageWidth) }}
+                {{ else }}
+                    {{- $img = $img.Resize "150x150" }}
+                {{- end }}
+            {{- end }}
+            <img draggable="false" src="{{ $img.Permalink }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
+                height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" fetchpriority="high" />
+        {{- else }}
+        <img draggable="false" src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
+            height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" fetchpriority="high" />
+        {{- end }}
+        {{- end }}
+        <h1>{{ .title | default site.Title | markdownify }}</h1>
+        <span>{{ .subtitle | markdownify }}</span>
+	{{- partial "social_icons.html" -}}
+
+        {{- with .buttons }}
+        <div class="buttons">
+            {{- range . }}
+            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
+                <span class="button-inner">
+                    {{ .name }}
+                    {{- if (findRE "://" .url) }}&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="14" width="14">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                    {{- end }}
+                </span>
+            </a>
+            {{- end }}
+        </div>
+        {{- end }}
+    </div>
+    {{- end}}
+</div>
+{{- if .Site.Params.profileMode }}
+{{ $indexPage:= $.Site.GetPage (printf "%s" .Site.Params.profileMode.indexPostContentFile) }}
+<article class="post-single">
+  <header class="post-header">
+    {{ partial "breadcrumbs.html" $indexPage }}
+    <h1 class="post-title entry-hint-parent">
+      {{ $indexPage.Title }}
+      {{- if $indexPage.Draft }}
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+      {{- end }}
+    </h1>
+    {{- if $indexPage.Description }}
+    <div class="post-description">
+      {{ $indexPage.Description }}
+    </div>
+    {{- end }}
+    {{- if not ($indexPage.Param "hideMeta") }}
+    <div class="post-meta">
+      {{- partial "post_meta.html" $indexPage -}}
+      {{- partial "translation_list.html" $indexPage -}}
+      {{- partial "edit_post.html" $indexPage -}}
+      {{- partial "post_canonical.html" $indexPage -}}
+    </div>
+    {{- end }}
+  </header>
+  {{- $isHidden := (.Param "cover.hiddenInSingle") | default ($indexPage.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" $indexPage "IsSingle" true "isHidden" $isHidden) }}
+  {{- if ($indexPage.Param "ShowToc") }}
+  {{- partial "toc.html" $indexPage }}
+  {{- end }}
+
+  {{- if $indexPage.Content }}
+  <div class="post-content">
+    {{- if not ($indexPage.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" $indexPage.Content -}}
+    {{- else }}{{ $indexPage.Content }}{{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer">
+
+    <!-- LIKE BUTTON START -->
+    {{- if not $indexPage.Params.noLike }}
+    <div class="lyked-button"
+        data-lyket-type="like"
+        data-lyket-namespace="blog"
+        data-lyket-id="{{ replace (path.Base .RelPermalink) " /" "-" }}"
+        data-lyket-template="twitter"
+        data-lyket-color-text="currentColor">
+    </div>
+    {{- end }}
+    <!-- LIKE BUTTON END -->
+
+    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    <ul class="post-tags">
+      {{- range ($.GetTerms $tags) }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+    {{- if ($indexPage.Param "ShowPostNavLinks") }}
+    {{- partial "post_nav_links.html" $indexPage }}
+    {{- end }}
+    {{- if (and site.Params.ShowShareButtons (ne $indexPage.Params.disableShare true)) }}
+    {{- partial "share_icons.html" $indexPage -}}
+    {{- end }}
+  </footer>
+
+  {{- if ($indexPage.Param "comments") }}
+  {{- partial "comments.html" $indexPage }}
+  {{- end }}
+</article>
+{{ end }}

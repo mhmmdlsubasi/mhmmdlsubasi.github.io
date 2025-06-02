@@ -1,0 +1,4 @@
+---
+title: "Arama"
+layout: "search"
+---
