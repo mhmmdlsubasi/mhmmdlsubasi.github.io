@@ -5,7 +5,7 @@ tags: ["python", "web scraping"]
 categories: ["Meteoroloji", "Yazılım"]
 description: "Türkiye Meteoroloji Genel Müdürlüğü (MGM) verilerine asenkron, hızlı ve yeniden kullanılabilir erişim sağlayan açık kaynak Python kütüphanesi."
 author: mhmmdlsubasi
-draft: false
+draft: true
 cover:
   image: cover.png
 sidebar:
